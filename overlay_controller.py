@@ -1,3 +1,4 @@
+# overlay_controller.py
 import tkinter as tk
 from tkinter import ttk, messagebox
 import ctypes
@@ -12,7 +13,7 @@ class BlackOverlayController:
     def __init__(self):
         self.root = tk.Tk()
         self.root.title("DarkScn")
-        self.root.geometry("350x120")
+        self.root.geometry("220x140")
         self.root.resizable(False, False)
         
         # ตัวแปรเก็บสถานะ
@@ -228,7 +229,7 @@ class BlackOverlayController:
         """เปิดหน้าต่างสำหรับตั้งค่า Custom Key"""
         key_window = tk.Toplevel(self.root)
         key_window.title("Set Custom Key")
-        key_window.geometry("350x150")
+        key_window.geometry("350x170")
         key_window.resizable(False, False)
         key_window.attributes("-topmost", True)
         

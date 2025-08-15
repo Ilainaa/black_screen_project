@@ -1,3 +1,6 @@
+# black_overlay.py
+# โปรแกรมสร้างหน้าจอสีดำที่คลิกทะลุได้ (Windows เท่านั้น
+
 import tkinter as tk
 import ctypes
 import sys
@@ -26,23 +29,30 @@ def main():
     
     # ปรับให้กด Esc ปิดได้
     root.bind("<Escape>", close_black_screen)
-    root.bind("<q>", close_black_screen)  # กด q เพื่อปิดได้ด้วย
-    root.bind("<Q>", close_black_screen)  # กด Q เพื่อปิดได้ด้วย
+    root.bind("<KeyPress-q>", close_black_screen)  # กด q หรือ Q เพื่อปิด
+    
+    # รับ Custom Key จาก command-line argument
+    if len(sys.argv) > 1:
+        custom_key = sys.argv[1]
+        if custom_key:
+            try:
+                root.bind(f"<{custom_key}>", close_black_screen)
+                print(f"Custom close key '<{custom_key}>' is active.")
+            except tk.TclError:
+                print(f"Warning: Invalid custom key '{custom_key}'.")
     
     # ให้ focus ที่หน้าต่าง
     root.focus_set()
     
-    # ข้อความแสดงวิธีปิด (จะมองไม่เห็นเพราะเป็นสีดำบนพื้นดำ แต่เป็น hint)
-    label = tk.Label(root, text="Press ESC or Q to close", 
-                    fg='#111111', bg='black', font=('Arial', 1))
-    label.pack(expand=True)
+    # ไม่จำเป็นต้องมี Label เพราะผู้ใช้ปิดจาก Controller หรือ Hotkey
     
     # รอให้หน้าต่างพร้อม
-    root.update_idletasks()
+    root.update()
     
     try:
         # ดึง hwnd ของหน้าต่างนี้
         hwnd = ctypes.windll.user32.GetForegroundWindow()
+
         
         # ทำให้คลิกทะลุได้
         make_clickthrough(hwnd)
